@@ -9,7 +9,6 @@ export class HomePage extends BasePage {
         this.title = page.getByAltText('Website for automation practice')
 
     }
-
     //Assertions
     async expectHomePage(){
         await expect(this.title).toBeVisible()
