@@ -11,6 +11,7 @@ export class HomePage extends BasePage {
     }
     //Assertions
     async expectHomePage(){
+        await expect.soft(this.page).toHaveURL('/') //Avec soft() (le test continue même si une assertion échoue.)        
         await expect(this.title).toBeVisible()
     }
 }
