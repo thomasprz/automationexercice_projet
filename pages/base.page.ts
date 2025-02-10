@@ -3,10 +3,13 @@ import {Locator, Page, expect} from '@playwright/test'
 export class BasePage {
      readonly page : Page
      readonly buttonConsent: Locator;
+     readonly buttonAcceptDialog : Locator
 
     constructor(page:Page) {
         this.page = page
         this.buttonConsent = page.getByRole('button', { name: 'Consent' });
+        this.buttonAcceptDialog = page.getByRole('button', { name: 'Submit' });
+
     }
 
     //Actions
@@ -18,4 +21,9 @@ export class BasePage {
           await this.buttonConsent.click();
     }
 
+    async catchDialog() {
+        this.page.on('dialog', (dialog) => {
+          dialog.accept();
+        });
+    }
 }
