@@ -11,6 +11,7 @@ export class LoginPage extends BasePage {
     readonly headerLogin : Locator
     readonly headerSignup : Locator
     readonly paragraphLoginIncorrectData : Locator
+    readonly paragraphSignupExistData : Locator
 
     constructor(page:Page){
         super(page)
@@ -23,6 +24,7 @@ export class LoginPage extends BasePage {
         this.signupButton = page.getByRole('button', {name:'Signup'})
         this.loginButton = page.getByRole('button', {name:'Login'})
         this.paragraphLoginIncorrectData = page.locator('.login-form', {hasText:'Your email or password is incorrect!'})
+        this.paragraphSignupExistData = page.locator('.signup-form', {hasText:'Email Address already exist!'})
     }
 
     //Actions
