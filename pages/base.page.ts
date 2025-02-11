@@ -26,4 +26,15 @@ export class BasePage {
           dialog.accept();
         });
     }
+
+    async scrollDownPage() {
+    await this.page.evaluate(() => {
+        window.scrollTo(0, document.body.scrollHeight);
+        });
+    }
+    async scrollUpPage() {
+        await this.page.evaluate(() => {
+            window.scrollTo(0, 0);
+        });
+    }
 }
