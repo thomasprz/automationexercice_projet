@@ -5,6 +5,7 @@ import { DeleteAccountPage } from '../pages/delete-account.page'
 import { ContactPage } from '../pages/contact.page'
 import { TestCasesPages } from '../pages/test-cases.page'
 import { ProductsPage } from '../pages/products.page'
+import { CartPage } from '../pages/cart.page'
 
 export class HeaderComponent{
     readonly page : Page
@@ -72,5 +73,10 @@ export class HeaderComponent{
         // On utilise hasText pour rechercher un texte spécifique dans un élément, et listitem car l'élément "Logged in as {username}" est dans un <li> (élément de liste), pas un lien direct <a>.
         const loggedInLocator = this.page.getByRole('listitem').filter({ hasText: `Logged in as ${username}` });
         await expect(loggedInLocator).toBeVisible();
+    }
+
+    async openCart(){
+        await this.cart.click()
+        return new CartPage(this.page)
     }
 }
