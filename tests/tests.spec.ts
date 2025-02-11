@@ -134,4 +134,68 @@ test.describe('Test Cases automationexercice.com', () => {
         await productDetails.expectProductDetailsPage()
         await productDetails.expectProductDetails(detailsData)
     })
+
+    test('Test Case 9: Search Product', async ({header, products}) => {
+        const search = 'Blue';
+
+        //Act
+        await header.openProducts();
+        await products.expectProductsPage();
+        await products.searchProduct(search);
+
+        //Assert
+        await products.isFoundProductsHaveSearchText(search);
+
+    })
+
+    test('Test Case 10: Verify Subscription in home page', async ({header, home, products, footer}) => {
+        //Arrange
+        const emailData = createFakeLoginUser()
+
+        //Act
+        await home.scrollDownPage()
+        await expect(footer.subscriptionHeader).toBeVisible()
+        await footer.fillSubscription((emailData.email))
+        await expect(footer.alertSuccessSubs).toBeVisible()
+        await expect(footer.alertSuccessSubs).toContainText('You have been successfully subscribed!')
+    })
+
+    test('Test Case 11: Verify Subscription in Cart page', async ({header,footer, cart}) => {
+        //Arrange
+        const emailData = createFakeLoginUser()
+        
+        //Act
+        await header.openCart()
+        await cart.scrollDownPage()
+        await expect(footer.subscriptionHeader).toBeVisible()
+        await footer.fillSubscription(emailData.email)
+        await expect(footer.alertSuccessSubs).toBeVisible()
+        await expect(footer.alertSuccessSubs).toContainText('You have been successfully subscribed!')
+    })
+
+    test('Test Case 12: Add Products in Cart', async ({header, login, products, cart}) => {
+          const productsData = [
+            {
+              id: 0,
+              name: 'Blue Top',
+              price: 500,
+              quantity: '1',
+            },
+            {
+              id: 2,
+              name: 'Sleeveless Dress',
+              price: 1000,
+              quantity: '1',
+            },
+          ];
+
+            await header.openProducts()
+            await products.addProductNumberAndContinue(productsData[0].id)
+            await products.addProductNumberAndViewCart(productsData[1].id)
+            const rows = await cart.rowForProduct.count();
+            expect(rows).toBe(2);
+            //Assert
+            await cart.expectAddedProducts(productsData);
+        })
+
 });
