@@ -9,6 +9,7 @@ import { ContactPage } from "../pages/contact.page";
 import { TestCasesPages } from "../pages/test-cases.page";
 import { ProductsPage } from "../pages/products.page";
 import { ProductDetailsPage } from "../pages/product-details.page";
+import { CartPage } from "../pages/cart.page";
 
 interface Pages {
     base : BasePage
@@ -21,6 +22,7 @@ interface Pages {
     testcases : TestCasesPages
     products : ProductsPage
     productDetails : ProductDetailsPage
+    cart : CartPage
 }
 
 export const pages = pagesTest.extend<Pages>({ //On étend la fonctionnalité de Playwright en ajoutant des objets Pages.
@@ -53,5 +55,8 @@ export const pages = pagesTest.extend<Pages>({ //On étend la fonctionnalité de
     },
     productDetails: async({page}, use) => {
         await use(new ProductDetailsPage(page))
-    }
+    },
+    cart: async({page}, use) => {
+        await use(new CartPage(page))
+    },
 })
