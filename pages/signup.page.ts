@@ -1,5 +1,7 @@
 import { Locator, Page, expect } from "@playwright/test";
 import { BasePage } from "./base.page";
+import { DeleteAccountPage } from "./delete-account.page";
+import { AccountCreatedPage } from "./account-created.page";
 
 export class SignupPage extends BasePage {
     readonly accountInformationTitle : Locator
@@ -23,6 +25,8 @@ export class SignupPage extends BasePage {
     readonly zipcodeField : Locator
     readonly mobilePhoneField : Locator
     readonly creatAccountButton  : Locator
+    readonly accountCreated : AccountCreatedPage
+    readonly deleteAccount : DeleteAccountPage
 
     constructor(page:Page){
     super(page)
@@ -47,6 +51,8 @@ export class SignupPage extends BasePage {
     this.zipcodeField = page.locator('#zipcode')
     this.mobilePhoneField = page.locator('#mobile_number')
     this.creatAccountButton = page.getByRole('button', {name:'Create Account'})
+    this.deleteAccount = new DeleteAccountPage(page);
+    this.accountCreated = new AccountCreatedPage(page)
     }
 
     async fillAccountInformation(user){
