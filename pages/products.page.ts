@@ -44,20 +44,15 @@ export class ProductsPage extends BasePage {
     async openFirstViewProduct(){
         await this.getFirstViewProduct().click();
       }
-      
-
 
     async addProductNumberAndContinue(index){
         await this.buttonAddToCart.nth(index).click()
         await this.popupContinueShopping.click()
-
     }
     async addProductNumberAndViewCart(index){
         await this.buttonAddToCart.nth(index).click()
         await this.popupViewCart.click()
     }
-
-
 
     async searchProduct(search){
         await this.fieldSearchProduct.fill(search);
