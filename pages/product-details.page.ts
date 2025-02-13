@@ -8,6 +8,9 @@ export class ProductDetailsPage extends BasePage{
     readonly availability : Locator
     readonly condition : Locator
     readonly brand : Locator
+    readonly quantity : Locator
+    readonly addToCartButton : Locator
+    readonly viewCart : Locator
 
     constructor(page:Page){
         super(page)
@@ -17,6 +20,9 @@ export class ProductDetailsPage extends BasePage{
         this.availability = page.locator('.product-information', {hasText:'Availability:'})
         this.condition = page.locator('.product-information', {hasText:'Condition:'})
         this.brand = page.locator('.product-information', {hasText:'Brand:'})
+        this.quantity = page.locator('#quantity')
+        this.addToCartButton = page.getByRole('button', {name:'Add to cart'})
+        this.viewCart = page.getByRole('link', {name:'View Cart'})
     }
 
     async expectProductDetailsPage(){
@@ -31,4 +37,11 @@ export class ProductDetailsPage extends BasePage{
         await expect(this.condition).toContainText(product.condition)
         await expect(this.brand).toContainText(product.brand)
     }
+
+    async increaseQuantitAndViewCart(quantity){
+    await this.quantity.fill(quantity)
+    await this.addToCartButton.click()
+    await this.viewCart.click()
+    }   
+
 }
