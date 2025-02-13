@@ -8,6 +8,8 @@ export class CartPage extends BasePage {
     readonly cellPrice : Locator
     readonly cellQuantity : Locator
     readonly cellTotalPrice : Locator
+    readonly proceedToCheckout : Locator
+    readonly linkRegisterLogin : Locator
 
     constructor(page:Page){
     super(page)
@@ -16,16 +18,45 @@ export class CartPage extends BasePage {
     this.cellPrice = page.locator('.cart_price')
     this.cellQuantity = page.locator('.cart_quantity')
     this.cellTotalPrice = page.locator('.cart_total_price')
+    this.proceedToCheckout = page.locator('.check_out')
+    this.linkRegisterLogin = page.getByRole('link', {name:'Register / Login'})
     }
 
-    async expectAddedProducts(products: { id: number; name: string; price: number; quantity: number }[]) {
-        for (const { name, price, quantity } of products) {
-            const totalPrice = price * quantity;
-            
-            await expect(this.page.getByRole('row', { name }).locator(this.cellPrice)).toHaveText(`Rs. ${price}`);
-            await expect(this.page.getByRole('row', { name }).locator(this.cellQuantity)).toHaveText(quantity.toString());
-            await expect(this.page.getByRole('row', { name }).locator(this.cellTotalPrice)).toHaveText(`Rs. ${totalPrice}`);
+    async clickRegisterLogin(){
+        await this.linkRegisterLogin.click()
+    }
+    
+    async clickProceedToCheckout(){
+        await this.proceedToCheckout.click()
+    }
+
+    async expectCartPage(){
+        await expect(this.page).toHaveURL('/view_cart')
+    }
+
+    async expectAddedProducts(products: { name: string; price: number; quantity: string }[]) {
+        for (const product of products) { //Dans la boucle, la variable product prend successivement la valeur de chaque élément du tableau productsData. 
+          const totalPrice = product.price * Number(product.quantity);
+          await expect(this.getProductName(product.name).locator(this.cellPrice)).toHaveText(`Rs. ${product.price}`);
+          await expect(this.getProductName(product.name).locator(this.cellQuantity)).toHaveText(product.quantity);
+          await expect(this.getProductName(product.name).locator(this.cellTotalPrice)).toHaveText(`Rs. ${totalPrice}`);
         }
-    }
+    
+      }
+      private getProductName(productName: string) {
+        return this.page.getByRole('row', { name: productName });
+      }
 
+    async expectAddedOneProduct(product) {
+        const totalPrice = product.price * Number(product.quantity)
+        await expect(this.getProductName(product.name).locator(this.cellPrice)).toHaveText(`Rs. ${product.price}`); 
+        //On récupère le name du produit dans productsData (défini dans le fichier de test). Ensuite, on localise la ligne (row) correspondant à ce nom dans le panier. 
+        //Une fois la ligne trouvée, on vérifie que le prix affiché dans cette ligne correspond bien au prix défini dans productsData.
+        await expect(this.getProductName(product.name).locator(this.cellQuantity)).toHaveText(product.quantity);
+        await expect(this.getProductName(product.name).locator(this.cellTotalPrice)).toHaveText(`Rs. ${totalPrice}`);
+
+        const displayedTotalPrice = await this.getProductName(product.name).locator(this.cellTotalPrice).innerText();
+        // Afficher le prix total affiché dans mon panier
+        console.log('Prix total affiché dans le panier :', displayedTotalPrice);
+    }
 }
