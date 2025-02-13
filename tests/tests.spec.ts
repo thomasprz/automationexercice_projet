@@ -3,6 +3,8 @@ import { accountInformation, addressInformation, createSignupUser } from '../fac
 import { createAccountAPI } from '../factories/api.factory';
 import { createFakeLoginUser } from '../factories/login.factory';
 import { createContactUsForm } from '../factories/contact.factory'
+import { createFakePayment } from '../factories/payment.factory';
+import { randomDesc } from '../factories/checkout.factory'
 
 test.describe('Test Cases automationexercice.com', () => {
   
@@ -190,7 +192,7 @@ test.describe('Test Cases automationexercice.com', () => {
           ];
 
             await header.openProducts()
-            await products.addProductNumberAndContinue(productsData[0].id)
+            await products.addProductNumberAndContinue(productsData[0].id) 
             await products.addProductNumberAndViewCart(productsData[1].id)
             const rows = await cart.rowForProduct.count();
             expect(rows).toBe(2);
@@ -198,4 +200,103 @@ test.describe('Test Cases automationexercice.com', () => {
             await cart.expectAddedProducts(productsData);
         })
 
+    test('Test Case 13: Verify Product quantity in Cart', async ({home, productDetails, cart}) => {
+            //Arrange
+            const productData = {
+                id : 4 , 
+                name: 'Winter Top', 
+                price : 600,
+                quantity: '4'
+            }
+            //Act
+            await home.clickOnProduct(productData.id)
+            await productDetails.expectProductDetailsPage()
+            await productDetails.increaseQuantitAndViewCart(productData.quantity)
+            await cart.expectAddedOneProduct(productData)
+    })
+
+    test('Test Case 14: Place Order: Register while Checkout', async ({header, home, cart, signup, checkout, payment, accountCreated, login, deleteAccount}) => {
+        //Arrange
+        const userBaseData = createSignupUser()
+        const userAccountInformation = accountInformation() //On récupère le résultat de la fonction enterAccountInformation() qui utilise Faker et on l'affecte à une variable.
+        const userAddressInformation = addressInformation()
+        const paymentInformations = createFakePayment()
+        const description = randomDesc()
+
+        //Act
+        await home.addProductNumberAndContinue(0)
+        await header.openCart()
+        await cart.expectCartPage()
+        await cart.clickProceedToCheckout()
+        await cart.clickRegisterLogin()
+        await login.fillUserSignup(userBaseData)
+        await signup.expectSignupPage()
+        await signup.expectAccountInformation(userBaseData)
+        await signup.fillAccountInformation(userAccountInformation)
+        await signup.fillAddressInformation(userAddressInformation)
+        await accountCreated.expectAccountCreated()
+        await accountCreated.clickContinue()
+        await header.expectLoggedUser(userBaseData.name)
+        await header.openCart()
+        await cart.clickProceedToCheckout()
+        await checkout.checkoutPage()
+        await checkout.checkDeliveryAddress(userAddressInformation)
+        await checkout.fillDescription(description)
+        await checkout.clickPlaceOrder()
+        await payment.fillPaymentInformation(paymentInformations)
+        await payment.clickPayAndConfirm()
+        await header.clickDeleteAccount()
+        await deleteAccount.expectDeleteAccount()
+        await expect(signup.deleteAccount.accountDeleteTitle).toContainText('Account Deleted!');
+        await signup.deleteAccount.clickContinue()
+    })
+
+    test('Test Case 15: Place Order: Register before Checkout', async ({header, login, signup, home, cart, checkout, payment}) => {
+        //Arrange
+        const userBaseData = createSignupUser()
+        const userAccountInformation = accountInformation()
+        const userAddressInformation = addressInformation()
+        const description = randomDesc()
+        const paymentOrder = createFakePayment()
+
+        //Act
+        await header.openSignupLogin()
+        await login.fillUserSignup(userBaseData)
+        await signup.fillAccountInformation(userAccountInformation)
+        await signup.fillAddressInformation(userAddressInformation)
+        await signup.accountCreated.expectAccountCreated()
+        await signup.accountCreated.clickContinue()
+        await header.expectLoggedUser(userBaseData.name)
+        await home.addProductNumberAndContinue(0)
+        await header.openCart()
+        await cart.expectCartPage()
+        await cart.clickProceedToCheckout()
+        await checkout.checkDeliveryAddress(userAddressInformation)
+        await checkout.fillDescription(description)
+        await checkout.clickPlaceOrder()
+        await payment.fillPaymentInformation(paymentOrder)
+        await payment.clickPayAndConfirm()
+        await header.clickDeleteAccount()
+        await expect(signup.deleteAccount.accountDeleteTitle).toBeVisible()
+        await signup.deleteAccount.clickContinue()
+    })
+
+    test('Test Case 16: Place Order: Login before Checkout', async ({header, login, home, cart, api, apiR}) => { //*
+        //Act
+        const userBaseDataAPI = createAccountAPI()
+        
+        await header.openSignupLogin()
+        const response = await api.createUser(userBaseDataAPI)
+        const responseBody = await response.json();
+        console.log(responseBody)
+
+        apiR.checkResponseCode(responseBody, 201);
+        apiR.checkResponseMessage(responseBody, 'User created!');
+        await login.fillLoginAccount(userBaseDataAPI)
+        await home.addProductNumberAndContinue(0)
+        await header.openCart()
+        await cart.expectCartPage()
+        await cart.clickProceedToCheckout()
+        //Pas finit
+    })
 });
