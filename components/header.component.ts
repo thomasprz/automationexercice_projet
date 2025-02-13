@@ -71,7 +71,7 @@ export class HeaderComponent{
 
     async expectLoggedUser(username){
         // On utilise hasText pour rechercher un texte spécifique dans un élément, et listitem car l'élément "Logged in as {username}" est dans un <li> (élément de liste), pas un lien direct <a>.
-        const loggedInLocator = this.page.getByRole('listitem').filter({ hasText: `Logged in as ${username}` });
+        const loggedInLocator = this.page.getByRole('listitem').filter({ hasText: `Logged in as ${username}` }); //filter permet de filtrer une liste d'éléments pour ne garder que ceux qui correspondent à un critère spécifique. // Les backticks permettent d'intégrer des variables directement dans la chaîne de caractères.
         await expect(loggedInLocator).toBeVisible();
     }
 
