@@ -336,6 +336,56 @@ test.describe('Test Cases automationexercice.com', () => {
 
         //Assert
         await expect(cart.sectionCartEmpty).toBeVisible();
+    })
+
+    test('Test Case 18: View Category Products', async ({leftSidebar, home, categoryProduct}) => {
+        //Arrange
+        const womenProductData = {
+            category: 'Women',
+            products: 'Dress',
+            title : 'Women - Dress Products',
+          };
+      
+          const menProductData = {
+            category: 'Men',
+            products: 'Jeans',
+            title: 'Men - Jeans Products'
+          };
+        //Act
+        await home.leftSidebar.expectLeftSidebar()
+        await home.leftSidebar.openCategoryByName(womenProductData.category)
+        await home.leftSidebar.openCategoryProductsByName(womenProductData.products)
+        await categoryProduct.expectCategoryProductsPage()
+        await expect(categoryProduct.getHeaderName(womenProductData.title)).toBeVisible()
+
+        await home.leftSidebar.openCategoryByName(menProductData.category)
+        await home.leftSidebar.openCategoryProductsByName(menProductData.products)
+        await categoryProduct.expectCategoryProductsPage()
+
+        //Assert
+        await expect(categoryProduct.getHeaderName(menProductData.title)).toBeVisible()
+    })
+
+
+    test('Test Case 19: View & Cart Brand Products', async({home, header, brandProduct, leftSidebar}) => {
+        //Arrange
+        const brandProductsBabyhug = {
+            brand : 'Babyhug',
+            header : 'Babyhug Products',
+        }
+
+        const brandProductsBiba = {
+            brand : 'Biba',
+            header : 'Biba Products',
+        }
+
+        //Act
+        await home.header.openProducts()
+        await home.leftSidebar.openBrandCategory(brandProductsBabyhug.brand)
+        await brandProduct.expectBrandProductsPage(brandProductsBabyhug.brand,brandProductsBabyhug.header)
+
+        await home.leftSidebar.openBrandCategory(brandProductsBiba.brand)
+        await brandProduct.expectBrandProductsPage(brandProductsBiba.brand,brandProductsBiba.header)
 
     })
 });
