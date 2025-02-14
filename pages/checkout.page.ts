@@ -18,9 +18,9 @@ export class CheckoutPage extends BasePage{
         await expect(this.page).toHaveURL('/checkout')
     }
     async checkDeliveryAddress(address) {
-        const strAddress = `Mr. ${address.firstname} ${address.lastname} ${address.company} ${address.address} ${address.address2} ${address.city} ${address.state} ${address.zipcode} ${address.country} ${address.mobile}`;
+        const strAddress = `Mr. ${address.firstname} ${address.lastname} ${address.company} ${address.address1} ${address.address2} ${address.city} ${address.state} ${address.zipcode} ${address.country} ${address.mobile_number}`;
         await expect(this.deliveryAddressLocator).toContainText(strAddress);
-      }
+    }
     async clickPlaceOrder(){
         await this.placeOrderButton.click()
     }
