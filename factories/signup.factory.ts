@@ -21,12 +21,12 @@ export function addressInformation(){
         firstname: faker.person.firstName(),
         lastname : faker.person.lastName(),
         company : faker.person.jobTitle(),
-        address : faker.location.streetAddress(),
+        address1 : faker.location.streetAddress(),
         address2 : faker.location.secondaryAddress(),
         country : 'Australia',
         state : faker.location.state(),
         city : faker.location.city(),
         zipcode : faker.location.zipCode(),
-        mobile : faker.phone.number(),
+        mobile_number : faker.phone.number(),
     };
 }
