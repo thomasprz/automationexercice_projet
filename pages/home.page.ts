@@ -1,6 +1,8 @@
 import { Locator, Page, expect } from "@playwright/test";
 import { BasePage } from "./base.page";
 import { ProductsPage } from "./products.page";
+import { LeftSidebarComponent } from "../components/sidebar.component";
+import { HeaderComponent } from "../components/header.component";
 
 export class HomePage extends BasePage {
         readonly title : Locator
@@ -8,6 +10,8 @@ export class HomePage extends BasePage {
         readonly addToCart : Locator
         readonly continueShoppingButton : Locator
         readonly products : ProductsPage
+        readonly leftSidebar : LeftSidebarComponent
+        readonly header : HeaderComponent
 
     constructor(page:Page){
         super(page)
@@ -16,6 +20,9 @@ export class HomePage extends BasePage {
         this.addToCart = page.locator('.add-to-cart')
         this.continueShoppingButton = page.getByRole('button', {name:'Continue Shopping'})
         this.products = new ProductsPage(page);
+        this.leftSidebar = new LeftSidebarComponent(page);
+        this.header = new HeaderComponent(page)
+
     }
 
     //Assertions
