@@ -281,9 +281,11 @@ test.describe('Test Cases automationexercice.com', () => {
         await signup.deleteAccount.clickContinue()
     })
 
-    test('Test Case 16: Place Order: Login before Checkout', async ({header, login, home, cart, api, apiR}) => { //*
+    test('Test Case 16: Place Order: Login before Checkout', async ({header, signup, login, home, cart, api, apiR, checkout, payment}) => { //*
         //Act
         const userBaseDataAPI = createAccountAPI()
+        const desc = randomDesc()
+        const userBaseDataPayment = createFakePayment()
         
         await header.openSignupLogin()
         const response = await api.createUser(userBaseDataAPI)
@@ -297,6 +299,43 @@ test.describe('Test Cases automationexercice.com', () => {
         await header.openCart()
         await cart.expectCartPage()
         await cart.clickProceedToCheckout()
-        //Pas finit
+        await checkout.checkDeliveryAddress(userBaseDataAPI)
+        await checkout.fillDescription(desc)
+        await checkout.clickPlaceOrder()
+        await payment.fillPaymentInformation(userBaseDataPayment)
+        await payment.clickPayAndConfirm()
+        await header.clickDeleteAccount()
+        await signup.deleteAccount.expectDeleteAccount()
+    })
+
+    test('Test Case 17: Remove Products From Cart', async ({header, home, cart }) => {
+        //Arrange
+        const productsData = [
+            {
+              id: 0,
+              name: 'Blue Top',
+              price: 500,
+              quantity: '1',
+            },
+            {
+              id: 2,
+              name: 'Sleeveless Dress',
+              price: 1000,
+              quantity: '1',
+            },
+          ];
+ 
+        //Act
+        await home.products.addProductNumberAndContinue(productsData[0].id)
+        await home.products.addProductNumberAndContinue(productsData[1].id)
+        await header.openCart()
+        await cart.expectCartPage()
+        await cart.expectAddedProducts(productsData)
+        await cart.clickDeleteQuantityByName(productsData[0].name)
+        await cart.clickDeleteQuantityByName(productsData[1].name)
+
+        //Assert
+        await expect(cart.sectionCartEmpty).toBeVisible();
+
     })
 });
