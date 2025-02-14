@@ -69,13 +69,13 @@ export class SignupPage extends BasePage {
         await this.firstNameField.fill(user.firstname)
         await this.lastNameField.fill(user.lastname)
         await this.companyField.fill(user.company)
-        await this.addressField.fill(user.address)
+        await this.addressField.fill(user.address1)
         await this.address2Field.fill(user.address2)
         await this.countryField.selectOption(user.country)
         await this.stateField.fill(user.state)
         await this.cityField.fill(user.city)
         await this.zipcodeField.fill(user.zipcode)
-        await this.mobilePhoneField.fill(user.mobile)
+        await this.mobilePhoneField.fill(user.mobile_number)
         await this.creatAccountButton.click()
     }
 
