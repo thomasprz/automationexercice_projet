@@ -1,11 +1,13 @@
 import { Locator, Page, expect } from "@playwright/test";
 import { BasePage } from "./base.page";
+import { ProductsPage } from "./products.page";
 
 export class HomePage extends BasePage {
         readonly title : Locator
         readonly linkViewProduct : Locator
         readonly addToCart : Locator
         readonly continueShoppingButton : Locator
+        readonly products : ProductsPage
 
     constructor(page:Page){
         super(page)
@@ -13,6 +15,7 @@ export class HomePage extends BasePage {
         this.linkViewProduct = page.getByRole('link', {name: 'View Product'})
         this.addToCart = page.locator('.add-to-cart')
         this.continueShoppingButton = page.getByRole('button', {name:'Continue Shopping'})
+        this.products = new ProductsPage(page);
     }
 
     //Assertions
