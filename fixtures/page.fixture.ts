@@ -13,6 +13,8 @@ import { CartPage } from "../pages/cart.page";
 import { CheckoutPage } from "../pages/checkout.page";
 import { PaymentPage } from "../pages/payment.page";
 import { PaymentDonePage } from "../pages/payment-done.page";
+import { CategoryProductPage } from "../pages/category-product.page";
+import { BrandProductPage } from "../pages/brand-product.page";
 
 interface Pages {
     base : BasePage
@@ -29,6 +31,8 @@ interface Pages {
     checkout : CheckoutPage
     payment : PaymentPage
     paymentDone : PaymentDonePage
+    categoryProduct : CategoryProductPage
+    brandProduct : BrandProductPage
 }
 
 export const pages = pagesTest.extend<Pages>({ //On étend la fonctionnalité de Playwright en ajoutant des objets Pages.
@@ -73,5 +77,13 @@ export const pages = pagesTest.extend<Pages>({ //On étend la fonctionnalité de
     },
     paymentDone : async ({page}, use) => {
         await use(new PaymentDonePage(page))
-    }
+    },
+    categoryProduct : async ({page}, use) => {
+        await use(new CategoryProductPage(page))
+    },
+    brandProduct: async({page}, use) => {
+        await use(new BrandProductPage(page))
+    },
+
+
  })
