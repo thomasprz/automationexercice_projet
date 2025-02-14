@@ -1,5 +1,6 @@
 import {Locator, Page, expect} from '@playwright/test'
 import { BasePage } from './base.page'
+import { HomePage } from './home.page'
 
 export class ProductsPage extends BasePage {
     readonly productsHeader : Locator
@@ -25,7 +26,6 @@ export class ProductsPage extends BasePage {
         this.buttonAddToCart = page.locator('.text-center').getByText('Add to cart');
         this.popupContinueShopping = page.getByRole('button', {name:'Continue Shopping'})
         this.popupViewCart = page.getByRole('link', {name:'View Cart'})
-
     }
 
     async expectProductsPage(){
