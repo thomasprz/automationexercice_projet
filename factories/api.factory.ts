@@ -18,7 +18,6 @@ export function createAccountAPI(){
         zipcode : faker.location.zipCode(),
         state : faker.location.state(),
         city : faker.location.city(),
-        mobile_number : faker.phone.number(),
+        mobile_number: faker.phone.number(),
     }
 }
-
