@@ -10,6 +10,8 @@ export class CartPage extends BasePage {
     readonly cellTotalPrice : Locator
     readonly proceedToCheckout : Locator
     readonly linkRegisterLogin : Locator
+    readonly buttonDeleteQuantity : Locator
+    readonly sectionCartEmpty : Locator
 
     constructor(page:Page){
     super(page)
@@ -20,6 +22,9 @@ export class CartPage extends BasePage {
     this.cellTotalPrice = page.locator('.cart_total_price')
     this.proceedToCheckout = page.locator('.check_out')
     this.linkRegisterLogin = page.getByRole('link', {name:'Register / Login'})
+    this.buttonDeleteQuantity = page.locator('.cart_quantity_delete');
+    this.sectionCartEmpty = page.locator('#empty_cart');
+
     }
 
     async clickRegisterLogin(){
@@ -34,7 +39,7 @@ export class CartPage extends BasePage {
         await expect(this.page).toHaveURL('/view_cart')
     }
 
-    async expectAddedProducts(products: { name: string; price: number; quantity: string }[]) {
+    async expectAddedProducts(products: { name: string; price: number; quantity: string }[]) { // TABLEAU DONC BOUCLE POUR PARCOURIR LE TABLEAU
         for (const product of products) { //Dans la boucle, la variable product prend successivement la valeur de chaque élément du tableau productsData. 
           const totalPrice = product.price * Number(product.quantity);
           await expect(this.getProductName(product.name).locator(this.cellPrice)).toHaveText(`Rs. ${product.price}`);
@@ -59,4 +64,10 @@ export class CartPage extends BasePage {
         // Afficher le prix total affiché dans mon panier
         console.log('Prix total affiché dans le panier :', displayedTotalPrice);
     }
+
+
+    async clickDeleteQuantityByName(productName){
+      await this.getProductName(productName).locator(this.buttonDeleteQuantity).click();
+    }
+
 }
