@@ -11,6 +11,12 @@ export class ProductDetailsPage extends BasePage{
     readonly quantity : Locator
     readonly addToCartButton : Locator
     readonly viewCart : Locator
+    readonly headerReview : Locator
+    readonly nameReview : Locator
+    readonly emailReview : Locator
+    readonly messageReview : Locator
+    readonly submitReviewButton : Locator
+    readonly messageSuccessReview : Locator
 
     constructor(page:Page){
         super(page)
@@ -23,6 +29,12 @@ export class ProductDetailsPage extends BasePage{
         this.quantity = page.locator('#quantity')
         this.addToCartButton = page.getByRole('button', {name:'Add to cart'})
         this.viewCart = page.getByRole('link', {name:'View Cart'})
+        this.headerReview = page.getByRole('link', {name:'Write Your Review'})
+        this.nameReview = page.locator('#name')
+        this.emailReview = page.locator('#email')
+        this.messageReview = page.getByPlaceholder('Add Review Here!')
+        this.submitReviewButton = page.getByRole('button', {name: 'Submit'})
+        this.messageSuccessReview = page.locator('#review-section .alert-success')
     }
 
     async expectProductDetailsPage(){
@@ -43,5 +55,16 @@ export class ProductDetailsPage extends BasePage{
     await this.addToCartButton.click()
     await this.viewCart.click()
     }   
+
+    async fillReview(data){
+        await this.nameReview.fill(data.name)
+        await this.emailReview.fill(data.email)
+        await this.messageReview.fill(data.review)
+        await this.submitReviewButton.click()
+    }
+
+    async expectSuccessReviewMessage() {
+        await expect(this.messageSuccessReview).toContainText('Thank you for your review.');
+      }
 
 }
