@@ -39,8 +39,8 @@ export class CartPage extends BasePage {
         await expect(this.page).toHaveURL('/view_cart')
     }
 
-    async expectAddedProducts(products: { name: string; price: number; quantity: string }[]) { // TABLEAU DONC BOUCLE POUR PARCOURIR LE TABLEAU
-        for (const product of products) { //Dans la boucle, la variable product prend successivement la valeur de chaque élément du tableau productsData. 
+    async expectAddedProducts(products: { name: string; price: number; quantity: string }[]) {
+        for (const product of products) { 
           const totalPrice = product.price * Number(product.quantity);
           await expect(this.getProductName(product.name).locator(this.cellPrice)).toHaveText(`Rs. ${product.price}`);
           await expect(this.getProductName(product.name).locator(this.cellQuantity)).toHaveText(product.quantity);
@@ -55,13 +55,10 @@ export class CartPage extends BasePage {
     async expectAddedOneProduct(product) {
         const totalPrice = product.price * Number(product.quantity)
         await expect(this.getProductName(product.name).locator(this.cellPrice)).toHaveText(`Rs. ${product.price}`); 
-        //On récupère le name du produit dans productsData (défini dans le fichier de test). Ensuite, on localise la ligne (row) correspondant à ce nom dans le panier. 
-        //Une fois la ligne trouvée, on vérifie que le prix affiché dans cette ligne correspond bien au prix défini dans productsData.
         await expect(this.getProductName(product.name).locator(this.cellQuantity)).toHaveText(product.quantity);
         await expect(this.getProductName(product.name).locator(this.cellTotalPrice)).toHaveText(`Rs. ${totalPrice}`);
 
         const displayedTotalPrice = await this.getProductName(product.name).locator(this.cellTotalPrice).innerText();
-        // Afficher le prix total affiché dans mon panier
         console.log('Prix total affiché dans le panier :', displayedTotalPrice);
     }
 
