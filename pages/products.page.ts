@@ -1,8 +1,13 @@
 import {Locator, Page, expect} from '@playwright/test'
 import { BasePage } from './base.page'
 import { HomePage } from './home.page'
+import { ProductDetailsPage } from './product-details.page';
+import { BrandProductPage } from './brand-product.page';
 
 export class ProductsPage extends BasePage {
+    readonly details: ProductDetailsPage;
+    readonly brands: BrandProductPage;
+
     readonly productsHeader : Locator
     readonly productsList : Locator
     readonly linkViewProduct : Locator
@@ -16,6 +21,10 @@ export class ProductsPage extends BasePage {
 
     constructor(page:Page) {
         super(page)
+        this.details = new ProductDetailsPage(page);
+        this.brands = new BrandProductPage(page);
+
+
         this.productsHeader = page.getByRole('heading', {name:'All Products', exact:true})
         this.headerSearchedProducts = page.getByRole('heading', {name : 'Searched Products', exact:true})
         this.productsList = page.locator('.features_items')
@@ -54,6 +63,10 @@ export class ProductsPage extends BasePage {
         await this.popupViewCart.click()
     }
 
+    async clickContinueShopping() {
+      await this.popupContinueShopping.click();
+    }
+
     async searchProduct(search){
         await this.fieldSearchProduct.fill(search);
         await this.buttonSearch.click();
@@ -70,4 +83,5 @@ export class ProductsPage extends BasePage {
           console.log('No found product');
         }
       }
+
 }
