@@ -5,6 +5,7 @@ import { createFakeLoginUser } from '../factories/login.factory';
 import { createContactUsForm } from '../factories/contact.factory'
 import { createFakePayment } from '../factories/payment.factory';
 import { randomDesc } from '../factories/checkout.factory'
+import {fillFakeReviewProduct} from '../factories/product-details.factory'
 
 test.describe('Test Cases automationexercice.com', () => {
   
@@ -386,6 +387,53 @@ test.describe('Test Cases automationexercice.com', () => {
 
         await home.leftSidebar.openBrandCategory(brandProductsBiba.brand)
         await brandProduct.expectBrandProductsPage(brandProductsBiba.brand,brandProductsBiba.header)
+    })
 
+    test('Test Case 20: Search Products and Verify Cart After Login', async ({home, header, products, cart, login}) => {
+        //Arrange
+      const search = 'Blue';
+      const expectProductNumber = 7;
+
+      const userLoginData = {
+      email: process.env.EMAIL,
+      password: process.env.PASSWORD,
+      };
+        //Act
+        await home.header.openProducts()
+        await products.expectProductsPage()
+        await products.searchProduct(search)
+        await products.isFoundProductsHaveSearchText(search)
+        const foundProducts = await products.singleProduct.count(); // Total du nombre d'articles affichés 
+        expect(foundProducts).toBe(expectProductNumber); // On le compare avec le nombre attendu
+
+        const addToCarts = await products.buttonAddToCart.all();
+        for (const addToCart of addToCarts) {
+            await addToCart.click();
+            await products.clickContinueShopping();
+        }
+
+        await header.openCart();
+        const cartProductNumber = await cart.rowForProduct.count(); //Nombre d'elements dans le panier
+        expect(cartProductNumber).toBe(foundProducts);
+        await header.openSignupLogin();
+        await login.fillLoginAccount(userLoginData);
+        await header.openCart();
+        const cartProductNumberAfterLogin = await cart.rowForProduct.count();
+        expect(cartProductNumberAfterLogin).toBe(foundProducts);
+    })
+
+    test('Test Case 21: Add review on product', async ({products, header}) => {
+        //Arrange
+        const dataReview = fillFakeReviewProduct()
+
+        //Act
+        await header.openProducts()
+        await products.expectProductsPage()
+        await products.openFirstViewProduct()
+        await expect(products.details.headerReview).toBeVisible()
+        await products.details.fillReview(dataReview)
+
+        //Assert
+        await products.details.expectSuccessReviewMessage()
     })
 });
