@@ -59,7 +59,6 @@ export class CartPage extends BasePage {
         await expect(this.getProductName(product.name).locator(this.cellTotalPrice)).toHaveText(`Rs. ${totalPrice}`);
     }
 
-
     async clickDeleteQuantityByName(productName){
       await this.getProductName(productName).locator(this.buttonDeleteQuantity).click();
     }
