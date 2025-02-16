@@ -1,4 +1,3 @@
-import {Locator, Page, expect} from '@playwright/test'
 import {APIRequestContext} from '@playwright/test'
 
 export class CreateAccountAPIPage {
