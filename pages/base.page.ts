@@ -1,18 +1,17 @@
-import {Locator, Page, expect} from '@playwright/test'
+import {Locator, Page} from '@playwright/test'
 
 export class BasePage {
      readonly page : Page
      readonly buttonConsent: Locator;
      readonly buttonAcceptDialog : Locator
+     readonly arrowUp : Locator
 
     constructor(page:Page) {
         this.page = page
         this.buttonConsent = page.getByRole('button', { name: 'Consent' });
         this.buttonAcceptDialog = page.getByRole('button', { name: 'Submit' });
-
+        this.arrowUp = page.locator('#scrollUp')
     }
-
-    //Actions
     async goTo(url ='/'){
         await this.page.goto(url) 
     }
@@ -32,9 +31,18 @@ export class BasePage {
         window.scrollTo(0, document.body.scrollHeight);
         });
     }
+    
     async scrollUpPage() {
         await this.page.evaluate(() => {
             window.scrollTo(0, 0);
         });
+    }
+
+    async takeScreenShot(screenShotName: string){
+        await this.page.screenshot({ path: `./e2e/download/ui/home/${screenShotName}.png` });
+    }
+    
+    async clickScrollUpArrow(){
+        this.arrowUp.click()
     }
 }
