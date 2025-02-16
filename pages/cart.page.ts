@@ -57,9 +57,6 @@ export class CartPage extends BasePage {
         await expect(this.getProductName(product.name).locator(this.cellPrice)).toHaveText(`Rs. ${product.price}`); 
         await expect(this.getProductName(product.name).locator(this.cellQuantity)).toHaveText(product.quantity);
         await expect(this.getProductName(product.name).locator(this.cellTotalPrice)).toHaveText(`Rs. ${totalPrice}`);
-
-        const displayedTotalPrice = await this.getProductName(product.name).locator(this.cellTotalPrice).innerText();
-        console.log('Prix total affiché dans le panier :', displayedTotalPrice);
     }
 
 
