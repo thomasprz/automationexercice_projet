@@ -2,6 +2,8 @@ import { Locator, Page, expect } from "@playwright/test";
 import { BasePage } from "./base.page";
 import { DeleteAccountPage } from "./delete-account.page";
 import { AccountCreatedPage } from "./account-created.page";
+import { LoginPage } from "./login.page";
+import { HeaderComponent } from "../components/header.component";
 
 export class SignupPage extends BasePage {
     readonly accountInformationTitle : Locator
@@ -27,6 +29,9 @@ export class SignupPage extends BasePage {
     readonly creatAccountButton  : Locator
     readonly accountCreated : AccountCreatedPage
     readonly deleteAccount : DeleteAccountPage
+    readonly login: LoginPage;
+    readonly accountedCreated : AccountCreatedPage
+    readonly header : HeaderComponent
 
     constructor(page:Page){
     super(page)
@@ -53,6 +58,9 @@ export class SignupPage extends BasePage {
     this.creatAccountButton = page.getByRole('button', {name:'Create Account'})
     this.deleteAccount = new DeleteAccountPage(page);
     this.accountCreated = new AccountCreatedPage(page)
+    this.header = new HeaderComponent(page)
+    this.login = new LoginPage(page)
+    this.deleteAccount = new DeleteAccountPage(page)
     }
 
     async fillAccountInformation(user){
