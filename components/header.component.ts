@@ -6,9 +6,9 @@ import { ContactPage } from '../pages/contact.page'
 import { TestCasesPages } from '../pages/test-cases.page'
 import { ProductsPage } from '../pages/products.page'
 import { CartPage } from '../pages/cart.page'
+import { BasePage } from '../pages/base.page'
 
-export class HeaderComponent{
-    readonly page : Page
+export class HeaderComponent extends BasePage{
     readonly home : Locator
     readonly products : Locator
     readonly cart : Locator
@@ -21,7 +21,7 @@ export class HeaderComponent{
     readonly logout : Locator
 
     constructor(page:Page){
-        this.page = page
+        super(page);
         this.home = page.getByRole('link', {name:' Home'})
         this.products = page.getByRole('link', {name:' Products'})
         this.cart = page.getByRole('link', {name:' Cart'})
@@ -70,9 +70,7 @@ export class HeaderComponent{
     }
 
     async expectLoggedUser(username){
-        // On utilise hasText pour rechercher un texte spécifique dans un élément, et listitem car l'élément "Logged in as {username}" est dans un <li> (élément de liste), pas un lien direct <a>.
-        const loggedInLocator = this.page.getByRole('listitem').filter({ hasText: `Logged in as ${username}` }); //filter permet de filtrer une liste d'éléments pour ne garder que ceux qui correspondent à un critère spécifique. // Les backticks permettent d'intégrer des variables directement dans la chaîne de caractères.
-        await expect(loggedInLocator).toBeVisible();
+        const loggedInLocator = this.page.getByRole('listitem').filter({ hasText: `Logged in as ${username}` });
     }
 
     async openCart(){
