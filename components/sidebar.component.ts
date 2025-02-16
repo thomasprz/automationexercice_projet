@@ -2,18 +2,17 @@ import {Locator, Page, expect} from '@playwright/test'
 import { BasePage } from '../pages/base.page'
 import { CategoryProductPage } from '../pages/category-product.page'
 
-export class LeftSidebarComponent{
-    readonly page : Page 
+export class LeftSidebarComponent extends BasePage{
     readonly sidebarLocator : Locator
     readonly headerSidebarCategory : Locator
     readonly headerSidebarBrandCategory : Locator
 
 
     constructor(page:Page){
-        this.page = page
-        this.sidebarLocator = page.locator('#accordian');
-        this.headerSidebarCategory = page.locator('.left-sidebar').getByRole('heading', { name: 'Category' });
-        this.headerSidebarBrandCategory = page.locator('.left-sidebar').getByRole('heading', {name: 'Brands'})
+      super(page);
+      this.sidebarLocator = page.locator('#accordian');
+      this.headerSidebarCategory = page.locator('.left-sidebar').getByRole('heading', { name: 'Category' });
+      this.headerSidebarBrandCategory = page.locator('.left-sidebar').getByRole('heading', {name: 'Brands'})
     }
 
 
