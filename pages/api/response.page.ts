@@ -1,4 +1,4 @@
-import { APIResponse, expect } from "@playwright/test";
+import { APIResponse, expect } from '@playwright/test';
 
 export class ResponseAPIPage {
     constructor(){
