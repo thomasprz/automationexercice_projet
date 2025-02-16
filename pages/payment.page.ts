@@ -3,6 +3,7 @@ import {Locator, Page, expect} from '@playwright/test'
 import { PaymentDonePage } from "./payment-done.page";
 
 export class PaymentPage extends BasePage {
+    readonly done : PaymentDonePage
     readonly nameOnCard : Locator
     readonly cardNumber: Locator
     readonly cvc: Locator
@@ -14,6 +15,7 @@ export class PaymentPage extends BasePage {
 
     constructor(page:Page){
         super(page)
+        this.done = new PaymentDonePage(page)
         this.nameOnCard= page.locator('[name="name_on_card"]')
         this.cardNumber= page.locator('[data-qa="card-number"]')
         this.cvc= page.locator('[data-qa="cvc"]')
