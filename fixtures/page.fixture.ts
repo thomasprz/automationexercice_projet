@@ -85,5 +85,4 @@ export const pages = pagesTest.extend<Pages>({ //On étend la fonctionnalité de
         await use(new BrandProductPage(page))
     },
 
-
  })
