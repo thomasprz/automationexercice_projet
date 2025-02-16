@@ -1,4 +1,3 @@
-import { BasePage } from "../pages/base.page";
 import { HeaderComponent } from "../components/header.component"; 
 import {test as componentsTest} from '@playwright/test'
 import { FooterComponent } from "../components/footer.component";
