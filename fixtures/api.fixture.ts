@@ -1,4 +1,3 @@
-import { BasePage } from "../pages/base.page";
 import { CreateAccountAPIPage } from "../pages/api/create-accountAPI.page";
 import { ResponseAPIPage } from "../pages/api/response.page";
 import {test as requestsTest} from '@playwright/test'
