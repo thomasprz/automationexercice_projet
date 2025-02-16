@@ -1,5 +1,6 @@
 import { Locator, Page, expect } from "@playwright/test";
 import { BasePage } from "./base.page";
+import { SignupPage } from "./signup.page";
 
 export class LoginPage extends BasePage {
     readonly signupNameInput : Locator
@@ -14,7 +15,7 @@ export class LoginPage extends BasePage {
     readonly paragraphSignupExistData : Locator
 
     constructor(page:Page){
-        super(page)
+        super(page)   
         this.headerLogin = page.locator('.login-form > h2')
         this.headerSignup = page.locator('.signup-form > h2')
         this.signupNameInput = page.locator('[data-qa="signup-name"]')
